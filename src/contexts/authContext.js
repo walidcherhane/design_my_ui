@@ -27,7 +27,7 @@ export function AuthProvider({children}) {
 
   useEffect(() => {
     if (currentUser) {
-      setSockt(io("http://localhost:5000"))
+      setSockt(io(process.env.REACT_APP_API_KEY))
     }
   }, [currentUser])
 
