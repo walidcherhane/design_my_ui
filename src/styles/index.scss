@@ -1,0 +1,341 @@
+
+@import '~antd/dist/antd.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+a,a::after,a::before,a:hover,a:active,a:visited{
+    color: inherit !important;
+    
+}
+*,*::after,*::before{
+    font-family: 'poppins', sans-serif;
+}
+ 
+html.dark{
+    .ant-btn[disabled]{
+        background-color: rgba(0, 0, 0, 0.303);
+        color: rgb(133, 133, 133)
+    }
+    .ant-radio-button-wrapper{
+        background: rgb(46 46 46);
+        color: rgb(255, 255, 255);
+        box-shadow: -2px -9px 16px 0px rgb(0 0 0 / 20%);
+
+        &-checked{
+            box-shadow: none;
+            color: #1890ff;
+            &:not(.ant-radio-button-wrapper-disabled):focus-within{
+                box-shadow:0 0 0 3px #5c5c5c;
+            }
+        }
+        
+    }
+    .ant-empty{
+        &-description {
+            color: #bdbcbc
+        }    
+        &-img-default{
+            &-ellipse{
+                fill: #444444;
+            }
+            &-path{
+                &-1{
+                    fill:#535658;
+                }
+                &-3{
+                    fill: #49494e
+                 }
+                 &-4{
+                    fill:#919191
+                }
+                &-5{
+                    fill:#57595c
+                }
+            }
+        }
+    }
+    .ant-upload{
+        &.ant-upload-drag{
+            background-color: #141414;
+            & p.ant-upload-text{
+                color: #d9d9d9;
+            }
+            & p.ant-upload-hint{
+                color: #bdbdbdbf;
+            }
+        }
+        &-list-item{
+            color: whitesmoke;
+            &:hover .ant-upload-list-item-info{
+                background-color: #3b3b3b;
+                color: white;
+            }
+            & .ant-upload-list-item-info {
+                & .ant-upload-text-icon .anticon{
+                    color: rgba(255, 255, 255, 0.738);
+    
+                }
+            }
+        }
+        &-list-item-card-actions .anticon{
+            color: rgba(255, 255, 255, 0.59);;
+        }
+    }
+    
+    .ant-input-textarea-show-count::after{
+        color: rgba(255, 255, 255, 0.563) 
+    }
+    .ant-modal-content{
+        background-color: #2A2C2D;
+        color: white;
+        & .ant-modal-header{
+            background-color: #2A2C2D;
+            color: white;
+            & .ant-modal-title{
+                color: white;
+            }
+        }
+        & .ant-modal-body{
+
+            & .ant-input-password-icon  {
+                color: white;
+            }
+        }
+        & .ant-modal-close-x  {
+            color: white;
+        }
+    }
+    .ant-modal-footer{
+        & button:hover{
+            color: #000000 !important;
+        }
+    }
+    .ant-picker{
+        background-color:transparent;
+        &-header button{
+            color:white;
+        }
+        &-input input{
+            color:white;
+        }
+        &-suffix {
+            color:white;
+        }
+        &-clear {
+            background-color:#2B2D2E;;
+            color:white;
+        }
+    }
+    .ant-picker-panel-container{
+        background-color:#2B2D2E;
+    }
+    .ant-picker-cell-in-view  {
+        color: white;
+        &:hover{
+            background-color: #2A2C2D;
+            color: white;
+        }
+    }
+    .ant-picker-cell{
+        &:hover .ant-picker-cell-inner{
+            background: #000000 !important;
+            color: white;
+    }
+    }
+    .ant-picker-header-view  {
+        color: white;
+        &:hover{
+            background-color: #2A2C2D;
+            color: white;
+        }
+    }
+    .ant-picker-content th{
+        color: white;
+    }
+
+    .ant-input-suffix > * {
+        color: rgba(255, 255, 255, 0.501);
+        &:hover{
+            color: white;
+        }
+    }
+    .ant-select-multiple {
+        &.ant-select-selection-item{
+            background: #2B2D2E;
+            border-color: #141414;
+            &:hover{
+                background-color: #373838;
+            }
+            &-remove{
+                color: white ;
+            }
+            &-content {
+                color: white;
+            }
+        }
+
+    }
+    .ant-select-multiple {
+        .ant-select-selection-item{
+            background: linear-gradient(to right, #232526, #252627);
+            border-color: #252627;
+            &:hover{
+                border-color: #414141;
+            }
+            & > *{
+                color: white;
+            }
+        }
+    }
+    .ant-select-dropdown{
+        background-color: #3d3d3d;
+    }
+    .ant-select-item-option-active:not(.ant-select-item-option-disabled){
+        background-color: #2B2D2E;
+        color: white;
+    }
+    .ant-select-item-option-selected:not(.ant-select-item-option-disabled){
+        background-color: #1a1c1d;
+        color: white;
+    }
+    .ant-select-clear{
+        background-color: transparent;
+        color: rgba(255, 255, 255, 0.501);
+        &:hover{
+            color: white;
+        }
+    }
+    .ant-select-selection-search-input{
+        color: white;
+    }
+    .ant-input-group-addon{
+        background-color: transparent;
+    }
+    .ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button:not(.ant-btn-primary){
+        color: #fafafa;
+        &:hover{
+            color: #1e1d1d
+        }
+    }
+    .ant-radio-inner, 
+    .ant-checkbox-inner{
+        background-color:transparent
+    }
+
+    .ant-radio-input:focus + .ant-radio-inner{
+        box-shadow: none;
+    }
+    .ant-dropdown-menu{
+        background-color: #2B2D2E;
+        color: white;
+        & .ant-btn{
+            background-color: rgba(255, 255, 255, 0) !important;
+            color: rgb(255, 255, 255) !important;
+         &:hover{
+            background-color: rgb(255, 255, 255) !important;
+            color: black !important;
+            border-color: transparent  
+        }
+        }
+    }
+    .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title{
+        color: white;
+        &:hover{
+            background-color: #3d4041 ;
+            color: white 
+        }
+    }
+
+    .ant-typography-edit-content{
+        position: unset;
+    }
+    .ant-popover{
+        &-arrow-content  {
+            background-color: #2A2C2D
+        }
+        &-inner-content   {
+            background-color: #2A2C2D;
+           & > * {
+                color: white
+            }
+            & .ant-btn:hover  {
+                color: #000000;
+            }
+        }
+    }
+    .ant-tabs-tab {
+        color: white;
+        &:hover {
+            color: var(--antd-wave-shadow-color)
+        }
+    }
+
+    .ant-divider{
+        &-horizontal   {
+            border-color: rgba(255, 255, 255, 0.234);
+        }
+        &-inner-text   {
+            color: rgba(255, 255, 255, 0.726)
+        
+        }
+    }
+    .ant-badge-status-text{
+        color: white;
+    }
+    .ant-input   {
+        color: white
+    }
+    .ant-radio-wrapper {
+        color: white;    
+    }
+    .ant-message-notice-content  {
+        background-color: #2A2C2D;
+        color: white
+    }
+}
+.ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap, .ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap{
+    transform:  translate(30px);
+}
+.ant-btn-primary{
+    color: var(--antd-wave-shadow-color);
+}
+
+.crisp-client .cc-kv6t .cc-1ada{
+    opacity: 0.8;
+}
+
+.ant-back-top {
+    right: 5%;
+    bottom: 80px ;
+    z-index: 1000;
+}
+
+.ant-input {
+    background-color: transparent !important;
+    background: transparent !important;
+}
+.ant-select-selector{
+    background-color: transparent !important;
+    background: transparent !important;
+}
+.ant-input-affix-wrapper {
+    background-color: transparent !important;
+    background: transparent !important;
+}
+.ant-select-multiple .ant-select-selection-item-remove > .anticon{
+    vertical-align: middle
+}
+svg {
+    display: inline-block !important;
+}
+
+button[disabled]:not(.ant-btn){
+    opacity: 50%;
+    cursor: not-allowed
+}
+
+@media (hover: none) {
+    .post--cart__footer{
+        opacity: 1 ;
+    }
+}
