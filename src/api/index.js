@@ -17,7 +17,6 @@ API.interceptors.response.use((res) =>{
       if (error.response && error.response?.status === 401){
             Cookies.remove('AUTH_TOKEN',{path: '/'})
             localStorage.clear()
-            window.location.replace("/login");
       }
       return Promise.reject( error.response?.data?.error)
 })
