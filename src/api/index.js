@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 
 const API = axios.create({ 
       baseURL:process.env.NODE_ENV === 'development' ? 
-      'http://192.168.43.181:5000' : process.env.REACT_APP_API_KEY
+      'http://localhost:5000' : process.env.REACT_APP_API_KEY
 });
 
 API.interceptors.request.use((req) => {
