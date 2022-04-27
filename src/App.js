@@ -20,11 +20,11 @@ import { HelmetProvider } from "react-helmet-async";
 
 import Public from "./auth/PublicRoute";
 import Private from "./auth/PrivateRoute";
-
 import ReactGA from 'react-ga';
 import { useEffect } from "react";
 function App() {
   const TRACKING_ID = process.env.REACT_APP_TRACKING_ID
+  if (!TRACKING_ID) throw new Error("Missing tracking id");
   ReactGA.initialize(TRACKING_ID);
 
   useEffect(() => {
