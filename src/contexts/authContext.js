@@ -18,38 +18,38 @@ export function AuthProvider({children}) {
   const [following, setFollowing] = useState([])
   const [notifications, setNotifications] = useState([])
   const [onlineUsers, setOnlineUsers] = useState([])
-  const [sockt, setSockt] = useState(null)
-  // keep track of the folowing and followers
+  const [socket, setSockt] = useState(null)
   useEffect(()=>{
     localStorage.setItem('followers', JSON.stringify(followers))
     localStorage.setItem('following', JSON.stringify(following))
   }, [followers, following])
+  
+  useEffect(()=>{
+      const api = process.env.NODE_ENV === 'development' ? 'http://192.168.43.197:5000' : process.env.REACT_APP_API_KEY
+      const _socket = io(api);
+      setSockt(_socket)
+  }, [])
 
   useEffect(() => {
-    if (currentUser) {
-      setSockt(io(process.env.REACT_APP_API_KEY))
+    if(currentUser && socket){
+     socket.emit('user', currentUser.username)
     }
-  }, [currentUser])
-
-  useEffect(() => { 
-    if(!sockt || !currentUser) return;
-    sockt.emit('user', currentUser.username)
-  }, [sockt, currentUser])
+  }, [socket, currentUser])
 
   useEffect(() => {
-    sockt?.on("notification", (notification)=>{ 
-      const isAllready = notifications.find(({id})=> id === notification.id )
-      if(isAllready) return;
-      setNotifications([notification, ...notifications])
-    })
-  }, [sockt, notifications])
-
-  useEffect(() => {
-    if(!sockt || !currentUser) return;
-    sockt.on('onlineUsers', (data) => {
+    socket?.on('onlineUsers', (data) => {
       setOnlineUsers(data)
     })
-  }, [sockt,setOnlineUsers,currentUser])
+  }, [socket])
+
+  useEffect(() => {
+    socket?.on("notification", (notification)=>{
+      // add notification only of it is not already in the array
+      if(!notifications.includes(notification)){
+        setNotifications([...notifications, notification])
+      }
+    })
+  }, [socket,notifications])
   
 
   const handleUserFollow = async (e, user) => {

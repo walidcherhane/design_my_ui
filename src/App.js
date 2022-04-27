@@ -21,7 +21,15 @@ import { HelmetProvider } from "react-helmet-async";
 import Public from "./auth/PublicRoute";
 import Private from "./auth/PrivateRoute";
 
+import ReactGA from 'react-ga';
+import { useEffect } from "react";
 function App() {
+  const TRACKING_ID = process.env.REACT_APP_TRACKING_ID
+  ReactGA.initialize(TRACKING_ID);
+
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, []);
   return (
     <>
       <ThemeProvider>
@@ -33,7 +41,7 @@ function App() {
                   <NavBar />
                   <Routes>
                     <Route exact path="/" element={<Private />}>
-                      <Route exact path="/posts" element={<Posts />} />
+                      {["/","/posts"].map((path, index) => <Route exact path={path} element={<Posts />} key={index}/>)}
                       <Route exact path="/posts/new" element={<AddPosts />} />
                       <Route exact path="/posts/:id" element={<Post />} />
                       <Route exact path="/:username/profile" element={<Profile />} />

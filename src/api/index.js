@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 
 const API = axios.create({ 
       baseURL:process.env.NODE_ENV === 'development' ? 
-      'http://localhost:5000' : process.env.REACT_APP_API_KEY
+      'http://192.168.43.197:5000' : process.env.REACT_APP_API_KEY
 });
 
 API.interceptors.request.use((req) => {
@@ -31,6 +31,7 @@ export const editProfile = async(modifiedUser)=>{ return await API.patch(`/profi
 export const deleteProfile = async(password)=>{ return await API.delete('/profile/delete', {data: {password}}) }
 export const SendUserEmailVerification = async()=>{ return await API.get('/verify')}
 export const verifyUserEmailToken = async(token)=>{ return await API.patch(`/verify/${token}`)}
+export const changeUserPassword = async(data)=>{ return await API.patch('/auth/change-password', {data})}
 
 export const followUserHandler = async (username)=>{ return await API.patch(`/follow/${username}`)}
 export const getNotifications = async ()=>{ return await API.get(`/notifications/`)}

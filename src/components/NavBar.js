@@ -1,37 +1,25 @@
-import {
-  Avatar,
-  Badge,
-  Button,
-  Divider,
-  Dropdown,
-  Menu,
-  message,
-  Space,
-} from "antd";
+import { Avatar, Badge, Button, Dropdown, Menu, message, Space } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import moment from "moment";
 import React, { useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 import { BsMoon, BsSun, BsSunFill, BsFillMoonFill } from "react-icons/bs";
-import Logo  from "../assets/img/logo.png";
+import Logo from "../assets/img/logo.png";
 import { useTheme } from "../contexts/ThemeContext";
 import { deleteNotification, SendUserEmailVerification } from "../api";
 import { useMediaQuery } from "react-responsive";
 import { AiFillBell } from "react-icons/ai";
 import { FaUserPlus } from "react-icons/fa";
 import { TiDelete } from "react-icons/ti";
-import {TiPlus} from "react-icons/ti";
-import {AiFillLike} from "react-icons/ai";
+import { TiPlus } from "react-icons/ti";
+import { AiFillLike } from "react-icons/ai";
+import emptyNotification from "../assets/img/noti_empty.svg";
 function NavBar() {
-  const {
-    currentUser,
-    setCurrentUser,
-    notifications,
-    setNotifications,
-  } = useAuth();
+  const { currentUser, setCurrentUser, notifications, setNotifications } =
+    useAuth();
   const { theme, setTheme } = useTheme();
-  const isSmallScreen = useMediaQuery({ query: `(max-width: 500px)` });
+  const isSmallScreen = useMediaQuery({ query: `(max-width: 550px)` });
   const handleDarkModeChange = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
@@ -45,7 +33,6 @@ function NavBar() {
     });
     try {
       const { data } = await SendUserEmailVerification();
-      console.log(data);
       if (data) {
         message.success({
           content: data.message,
@@ -64,7 +51,6 @@ function NavBar() {
       );
       try {
         const { data } = await deleteNotification(id);
-        console.log(data);
         setNotifications(data.notification);
       } catch (error) {
         message.error(error);
@@ -80,7 +66,7 @@ function NavBar() {
           <Menu.Item key={1} style={{ padding: "0px" }}>
             <Link to={`/${currentUser.username}/profile`}>
               <ul className="p-4 px-10 dark:text-white  text-center flex flex-col justify-center items-center rounded-md ">
-                <li className="border-2 mb-2 border-gray-300 rounded-full">
+                <li>
                   <Avatar size={70} src={currentUser.avatar} />
                 </li>
                 <li>{currentUser.name} </li>
@@ -111,13 +97,13 @@ function NavBar() {
           <Menu.Item key={5}>
             <Space style={{ width: "100%" }}>
               <Button onClick={handleLogOut}>Log Out</Button>
-              <span className="sm:hidden">
+              <span>
                 <Button
                   type="dashed"
                   shape="circle"
                   icon={theme === "dark" ? <BsSun /> : <BsMoon />}
                   onClick={handleDarkModeChange}
-                /> 
+                />
               </span>
             </Space>
           </Menu.Item>
@@ -127,7 +113,7 @@ function NavBar() {
   );
 
   const NotificationMenu = (
-    <Menu style={{ minWidth: 300 }} selectable={false}>
+    <Menu style={{ minWidth: 250, marginTop: 20 }} selectable={false}>
       {notifications?.map((notification) => (
         <Menu.Item key="1">
           <div className="flex items-center  relative">
@@ -138,7 +124,6 @@ function NavBar() {
                 alt={notification.user.name}
               />
               <span className="absolute -bottom-2 -right-2 inline-flex items-center justify-center w-6 h-6 bg-blue-600 text-white  rounded-full">
-                
                 {notification.type === "follow" && <FaUserPlus />}
                 {notification.type === "post" && <TiPlus />}
                 {notification.type === "like" && <AiFillLike />}
@@ -163,7 +148,8 @@ function NavBar() {
                 {notification.type === "post" &&
                   "Shared New Post, go check it out!"}
                 {notification.type === "like" &&
-                  "Yahooo! Your post got a new like! from "+notification.user.name}
+                  "Yahooo! Your post got a new like! from " +
+                    notification.user.name}
               </div>
               <span className="text-xs font-medium text-blue-600 dark:text-blue-500">
                 {moment(notification._data.date).fromNow()}
@@ -172,6 +158,16 @@ function NavBar() {
           </div>
         </Menu.Item>
       ))}
+      {notifications?.length === 0 && (
+        <Menu.Item key={1}>
+          <div className="flex p-8 flex-col items-center justify-center  relative">
+            <h4 className="text-lg  text-gray-300 dark:text-white/50">
+              No Notifications yet
+            </h4>
+            <img className="" src={emptyNotification} alt="empty" />
+          </div>
+        </Menu.Item>
+      )}
     </Menu>
   );
   return (
@@ -179,13 +175,12 @@ function NavBar() {
       <div className="container mx-auto">
         <div className="flex items-center-justify-between">
           <div className="mr-auto p-2 font-bold text-xl">
-            <Link to="/posts" className="flex gap-4 justify-center items-center">
-              <img
-                className="w-10 h-10 rounded-full"
-                src={Logo}
-                alt="logo"
-              />
-                Design my ui
+            <Link
+              to="/posts"
+              className="flex gap-4 justify-center items-center"
+            >
+              <img className="w-10 h-10 rounded-full" src={Logo} alt="logo" />
+              Design my ui
             </Link>
           </div>
           <div className="flex gap-4 sm:gap-10 text-sm ml-auto m-0 items-center justify-center mr-0 ">
@@ -197,30 +192,24 @@ function NavBar() {
                     <Link to="posts/new">Upload design</Link>
                   </>
                 )}
-                <Dropdown overlay={menu} trigger={["click"]}>
-                  {isSmallScreen ? (
-                    <MenuOutlined style={{ fontSize: 20 + "px" }} />
-                  ) : (
-                    <Avatar src={currentUser.avatar} />
-                  )}
-                </Dropdown>
                 <Badge count={notifications?.length} size="small">
                   <Dropdown overlay={NotificationMenu} trigger={["click"]}>
                     <AiFillBell className="text-2xl dark:text-white " />
                   </Dropdown>
                 </Badge>
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  {isSmallScreen ? (
+                    <MenuOutlined style={{ fontSize: 20 + "px" }} />
+                  ) : (
+                    <Avatar src={currentUser.avatar} className=" cursor-pointer " />
+                  )}
+                </Dropdown>
               </>
             ) : (
               <>
                 <Link to="/Login">Login</Link>
                 <Link to="/Register">Register</Link>
               </>
-            )}
-
-            {!isSmallScreen && (
-              <button className=" text-lg 	" onClick={handleDarkModeChange}>
-                {theme === "dark" ? <BsSunFill /> : <BsFillMoonFill />}
-              </button>
             )}
           </div>
         </div>

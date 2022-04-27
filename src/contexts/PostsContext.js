@@ -21,7 +21,6 @@ import { useAuth } from "./authContext";
       const getInitialikes = async () =>{
         try {
           const { data } = await getLikedPosts()
-          console.log(data)
           setLikedPosts(data.likedPosts)
         } catch (error) {
           message.warning('Error happed while fetching likes')
@@ -30,7 +29,6 @@ import { useAuth } from "./authContext";
       const getInitialSavedPosts = async ()=>{
         try {
           const {data} = await getSavedPosts(currentUser.username);
-          console.log(data)
           setSavedPosts(data.Posts)
           
         } catch (error) {

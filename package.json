@@ -1,8 +1,20 @@
 {
-  "proxy": "https://design-my-ui.herokuapp.com/",
-  "name": "client",
-  "version": "0.1.0",
-  "private": true,
+  "name": "design_my_ui",
+  "version": "1.0.0",
+  "description": "Design my Ui is a web plathform made for anyone looking for web inspirations. with Design my ui, anyone can acceess and share UI Designs for free. it is simple to share acceess them in anytime just with your account",
+  "main": "index.js",
+  "tags": [
+    "ui",
+    "design_my_ui",
+    "uidesign",
+    "webdesign",
+    "uidesigner",
+    "interface",
+    "designinspiration",
+    "uiinspiration"
+  ],
+  "author": "Walid Cherhane",
+  "license": "MIT",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@emotion/react": "^11.7.1",
@@ -23,6 +35,7 @@
     "react": "^17.0.2",
     "react-cookie": "^4.1.1",
     "react-dom": "^17.0.2",
+    "react-ga": "^3.3.0",
     "react-helmet-async": "^1.2.2",
     "react-icons": "^4.3.1",
     "react-palette": "^1.0.2",

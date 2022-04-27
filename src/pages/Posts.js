@@ -15,6 +15,7 @@ function Posts() {
   );
   const { posts, setPosts } = usePosts();
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     setLoading(true);
     const fetchPosts = async () => {
@@ -62,8 +63,9 @@ function Posts() {
             <Search
               className="text-white"
               placeholder="Enter any keyword to search (eg: tag, username, post title or by software)"
-              onSearch={handleSearch}
+              onChange={(event)=>{handleSearch(event.target.value)}}
               loading={loading}
+              enterButton
             />
           </div>
 
@@ -71,6 +73,7 @@ function Posts() {
             className="flex flex-wrap gap-2 justify-center"
             onChange={(e) => setSortPref(e.target.value)}
             defaultValue={sortPref}
+            disabled={loading}
           >
             <Radio.Button value="likes">Sort By Likes</Radio.Button>
             <Radio.Button value="Date">Sort By Newest</Radio.Button>
@@ -86,7 +89,7 @@ function Posts() {
                   <Post post={post} />
                 </AnimateOnView>
               ))}
-              {posts?.length === 0 && !loading && (
+              {posts?.length === 0 && !loading  && (
                 <div className="col-span-full  flex items-center justify-center">
                   <Empty />
                 </div>

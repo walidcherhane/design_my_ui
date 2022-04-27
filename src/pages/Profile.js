@@ -1,4 +1,5 @@
 import {
+  Alert,
   Avatar,
   Button,
   Divider,
@@ -15,6 +16,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  changeUserPassword,
   deleteProfile,
   editProfile,
   followUserHandler,
@@ -28,8 +30,8 @@ import ImgCrop from "antd-img-crop";
 import Text from "antd/lib/typography/Text";
 import moment from "moment";
 import { AiOutlineEdit } from "react-icons/ai";
-import {RiUserUnfollowLine, RiUserFollowLine} from 'react-icons/ri';
 import {motion} from 'framer-motion';
+import {AiFillCamera } from 'react-icons/ai';
 const { TabPane } = Tabs;
 function Profile() {
   const { currentUser, setCurrentUser, setFollowing, following } = useAuth();
@@ -39,6 +41,12 @@ function Profile() {
   const [loading, setLoading] = useState(false);
   const [ProfileLoading, setProfileLoading] = useState(false);
   const [PasswordModelVisible, setPasswordModelVisible] = useState(false);
+  const [changePasswordModelVisible, setChangePasswordModelVisible] = useState(false)
+  const [changePasswordData, setChangePasswordData] = useState({
+    password: "",
+    newPassword: "",
+    newPasswordConfirm: "",
+  });
   const [deletePassword, setDeletePassword] = useState("");
   const [SavedPosts, setSavedPosts] = useState({});
   const { username } = useParams();
@@ -62,7 +70,6 @@ function Profile() {
     };
     return getPosts();
   }, [setPosts, username, Navigate]);
-
   const handlePrfileChange = async () => {
     setProfileLoading(true);
     try {
@@ -80,7 +87,6 @@ function Profile() {
       setProfileLoading(false);
     }
   };
-
   const handleFileChange = ({ file, target }) => {
     let reader = new FileReader();
     reader.readAsDataURL(file.originFileObj);
@@ -104,8 +110,7 @@ function Profile() {
     e.preventDefault();
     try {
       const { data } = await followUserHandler(user.username);
-      const { usr, isFollowing, msg } = data;
-      message.success(msg);
+      const { usr, isFollowing } = data;
       if (isFollowing) {
         setFollowing([...following, usr]);
       } else {
@@ -115,6 +120,15 @@ function Profile() {
       message.error(error);
     }
   };
+  const HanlePasswordChange = async ()=>{ 
+    try {
+      const {data} = await changeUserPassword(changePasswordData);
+      message.success(data.message);
+    } catch (error) {
+      message.error(error);
+    }
+  }
+  const canEdit = currentUser?._id === user?._id; 
   return (
     <>
       {loading ? (
@@ -134,7 +148,7 @@ function Profile() {
             <div className="grid sm:gap-4 min-h-screen grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 m-0 sm:m-5 pt-24">
               <div className="profile flex  mx-8 sm:mx-2 md:mx-0  bg-white rounded-t-2xl  overflow-hidden sm:shadow-xl dark:bg-gray-900/20 items-start justify-start flex-col ">
                 <div className="profile-head mb-20  h-32  w-full flex flex-cols   relative justify-center items-end ">
-                  {currentUser._id === user._id ? (
+                  {canEdit ? (
                     <ImgCrop aspect={4 / 2}>
                       <Upload
                         name="header_photo"
@@ -152,6 +166,9 @@ function Profile() {
                           alt={`${currentUser?.name.split(" ")[0]}'s header`}
                           className="h-full w-full  object-cover absolute inset-0"
                         />
+                        <span className=" w-10 h-10 flex justify-center items-center absolute bottom-2 right-2 z-10 text-xl text-white rounded-full bg-gray-900/50">
+                          <AiFillCamera />
+                        </span>
                       </Upload>
                     </ImgCrop>
                   ) : (
@@ -162,8 +179,8 @@ function Profile() {
                     />
                   )}
 
-                  <div className="  avatar w-28 h-28 rounded-full border-4 bg-white border-white dark:border-[#272F33] overflow-hidden translate-y-16 ">
-                    {currentUser._id === user._id ? (
+                  <div className=" relative avatar w-28 h-28 rounded-full border-4  border-white dark:border-[#272F33] overflow-hidden translate-y-16 ">
+                    {canEdit ? (
                       <ImgCrop>
                         <Upload
                           name="avatar"
@@ -175,9 +192,12 @@ function Profile() {
                           }}
                         >
                           <Avatar
-                            size={112}
+                            style={{ width: 100+'%', height: 100+'%' }}
                             src={modifiedUser?.avatar || currentUser.avatar}
                           />
+                        <span className="  w-full h-full transition opacity-0 hover:opacity-100 flex justify-center items-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2  z-10 text-xl text-white rounded-full bg-gray-900/50">
+                          <AiFillCamera />
+                        </span>
                         </Upload>
                       </ImgCrop>
                     ) : (
@@ -197,18 +217,15 @@ function Profile() {
                       onClick={handleUserFollow}
                       className=" mx-auto text-white bg-gradient-to-r from-[#096dd9] to-[#1890ff] shadow-xl shadow-[#0000ff63] font-medium p-1 px-4 rounded-full mb-4  text-center "
                     >
-
-                      {following.includes(user._id) ? (
-                        <span className="text-white"><RiUserUnfollowLine /> Following</span>
-                      ) : (
-                        <span className="text-white"><RiUserFollowLine /> Follow</span>
-                      )}
+                      <span className="text-white">
+                        {following.includes(user._id) ? 'Following' :'Follow'}
+                      </span>
                     </motion.span>
                   )}
                 <div className="text-center w-full">
                   <Text
                     editable={
-                      currentUser._id === user._id
+                      canEdit
                         ? {
                             icon: <AiOutlineEdit />,
                             tooltip: "click to edit text",
@@ -220,7 +237,7 @@ function Profile() {
                     }
                     className=" text-gray-800  dark:text-gray-300 font-bold text-xl"
                   >
-                    {currentUser._id === user._id
+                    {canEdit
                       ? modifiedUser?.name || currentUser.name
                       : user.name}
                   </Text>
@@ -231,7 +248,7 @@ function Profile() {
                     {" "}
                     <Text
                       editable={
-                        currentUser._id === user._id
+                        canEdit
                           ? {
                               icon: <AiOutlineEdit />,
                               tooltip: "click to edit text",
@@ -248,7 +265,7 @@ function Profile() {
                       }
                       className="text-gray-800 font-normal dark:text-gray-200"
                     >
-                      {currentUser._id === user._id
+                      {canEdit
                         ? modifiedUser?.bio ||
                           currentUser.bio ||
                           "Add your bio here"
@@ -264,7 +281,7 @@ function Profile() {
                       </div>
                       <Text
                         editable={
-                          currentUser._id === user._id
+                          canEdit
                             ? {
                                 icon: <AiOutlineEdit />,
                                 tooltip: "click to edit text",
@@ -279,7 +296,7 @@ function Profile() {
                         }
                         className="text-gray-800 font-normal dark:text-gray-400"
                       >
-                        {currentUser._id === user._id
+                        {canEdit
                           ? modifiedUser?.email || currentUser.email
                           : user.email}
                       </Text>
@@ -290,7 +307,7 @@ function Profile() {
                       </div>
                       <Text
                         editable={
-                          currentUser._id === user._id
+                          canEdit
                             ? {
                                 icon: <AiOutlineEdit />,
                                 tooltip: "click to edit text",
@@ -305,7 +322,7 @@ function Profile() {
                         }
                         className="text-gray-800 font-normal dark:text-gray-400"
                       >
-                        {currentUser._id === user._id
+                        {canEdit
                           ? modifiedUser?.address || currentUser.address
                           : user.address}
                       </Text>
@@ -338,7 +355,7 @@ function Profile() {
                   </ul>
                 </div>
                 <Divider />
-                {currentUser._id === user._id && (
+                {canEdit && (
                   <div className="flex w-full flex-col mt-3 gap-3 px-4">
                     <Button
                       disabled={!modifiedUser}
@@ -349,22 +366,29 @@ function Profile() {
                     >
                       Submit Changes
                     </Button>
+                    <Button
+                      onClick={() => setChangePasswordModelVisible(true)}
+                      block
+                    >
+                      Change Password
+                    </Button>
                     {modifiedUser ? (
                       <Button
                         onClick={() => {
                           setModifiedUser(null);
                         }}
                         block
+
                       >
                         Reset all changes
                       </Button>
                     ) : (
                       <Popconfirm
-                        title="Are you sure you are living us? 💔 "
+                        title="Are you sure you? 💔 "
                         onConfirm={() => setPasswordModelVisible(true)}
                         okText="Yes 😣"
                         okType="danger"
-                        cancelText="Never ❤"
+                        cancelText="Nope 😊"
                       >
                         <Button type="danger" block ghost>
                           Delete Profile
@@ -373,9 +397,10 @@ function Profile() {
                     )}
                   </div>
                 )}
+
               </div>
               <Modal
-                title="Please Enter your password"
+                title="Delete Profile"
                 visible={PasswordModelVisible}
                 onCancel={() => {
                   setPasswordModelVisible(false);
@@ -403,7 +428,7 @@ function Profile() {
               >
                 <Input.Password
                   required
-                  placeholder="input password"
+                  placeholder="Please enter your password"
                   onChange={(e) => {
                     setDeletePassword(e.target.value);
                   }}
@@ -411,13 +436,76 @@ function Profile() {
                 {posts.length > 0 && (
                   <>
                     <Divider dashed />
-                    <p className="text-[13px] italic text-red-400 ">
-                      *Please note that once you delete your account all your
-                      posts won't be deleted !, If still you will need to delete
-                      them, Do so before deleting your account
-                    </p>
+                    <Alert
+                      message="Warning"
+                      description="Please note! Deleting your account will NOT delete your posts,
+                                    If still you will need to delete
+                                    them, Do so before deleting your account"
+                      type="warning"
+                      showIcon
+                    />
                   </>
                 )}
+              </Modal>
+              <Modal
+                title="Change Password"
+                visible={changePasswordModelVisible}
+                onCancel={() => {
+                  setChangePasswordModelVisible(false);
+                }}
+                footer={[
+                  <Button
+                    type="dashed"
+                    onClick={() => {
+                      setChangePasswordModelVisible(false);
+                    }}
+                  >
+                    Cancel
+                  </Button>,
+                  <Button
+                    key="submit"
+                    type="primary"
+                    htmlType="submit"
+                    danger
+                    ghost
+                    onClick={HanlePasswordChange}
+                  >
+                    Submit
+                  </Button>,
+                ]}
+              >
+                <div className="flex flex-col gap-y-4">
+                <Input.Password
+                  required
+                  placeholder="Enter your old password"
+                  onChange={(e) => {
+                    setChangePasswordData({
+                      ...changePasswordData,
+                      password: e.target.value,
+                    });
+                  }}
+                />
+                <Input.Password
+                  required
+                  placeholder="Enter new password"
+                  onChange={(e) => {
+                    setChangePasswordData({
+                      ...changePasswordData,
+                      newPassword: e.target.value,
+                    });
+                  }}
+                />
+                <Input.Password
+                  required
+                  placeholder="Re-enter new password"
+                  onChange={(e) => {
+                    setChangePasswordData({
+                      ...changePasswordData,
+                      newPasswordConfirm: e.target.value,
+                    });
+                  }}
+                />
+                </div>
               </Modal>
               <motion.div layout className="md:col-span-1 lg:col-span-2 xl:col-span-3 2xl:col-span-4  pt-4">
                 <Tabs defaultActiveKey="1">
