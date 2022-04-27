@@ -9,12 +9,10 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { usePosts } from "../contexts/PostsContext";
 import { useAuth } from "../contexts/authContext";
 import {motion} from 'framer-motion'
-import useAnalyticsEventTracker from "../hooks/useAnalyticsEventTracker";
 function Post({ post }) {
   const [loading, setLoading] = useState({ like: false, save: false });
   const { likedPosts, setLikedPosts, savedPosts, setSavedPosts } = usePosts();
   const {onlineUsers} = useAuth()
-  const gaEventTracker = useAnalyticsEventTracker('Post');
 
   
 
@@ -25,11 +23,7 @@ function Post({ post }) {
       const { data } = await likePost(postId);
       setLoading({ ...loading, like: false });
       setLikedPosts(data.likedPosts)
-      gaEventTracker({
-        category: 'Post',
-        action: data.likedPosts.includes(postId) ? 'Unlike' : 'Like',
-        label: post.title,
-      });
+
     } catch (error) {
       setLoading({ ...loading, like: false });
       message.error(error);
@@ -41,11 +35,6 @@ function Post({ post }) {
       const { data } = await handlePostSave({ Post: postId });
       setLoading({ ...loading, save: false });
       setSavedPosts(data.savedPosts)
-      gaEventTracker({
-        category: 'Post',
-        action: data.savedPosts.includes(postId) ? 'Unsave' : 'Save',
-        label: post.title,
-      });
     } catch (error) {
       setLoading({ ...loading, save: false });
       message.error(error);
