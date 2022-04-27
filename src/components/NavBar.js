@@ -4,7 +4,7 @@ import moment from "moment";
 import React, { useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
-import { BsMoon, BsSun, BsSunFill, BsFillMoonFill } from "react-icons/bs";
+import { BsMoon, BsSun } from "react-icons/bs";
 import Logo from "../assets/img/logo.png";
 import { useTheme } from "../contexts/ThemeContext";
 import { deleteNotification, SendUserEmailVerification } from "../api";
@@ -67,7 +67,7 @@ function NavBar() {
             <Link to={`/${currentUser.username}/profile`}>
               <ul className="p-4 px-10 dark:text-white  text-center flex flex-col justify-center items-center rounded-md ">
                 <li>
-                  <Avatar size={70} src={currentUser.avatar} />
+                  <Avatar size={70}  src={currentUser.avatar} />
                 </li>
                 <li>{currentUser.name} </li>
                 <li>{currentUser.email}</li>

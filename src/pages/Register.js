@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import {BsPerson} from "react-icons/bs";
-import {AiOutlineMail, AiOutlineLock, AiOutlineInfoCircle} from "react-icons/ai";
+import {AiOutlineMail, AiOutlineLock} from "react-icons/ai";
 import {FiAtSign} from "react-icons/fi";
 import {Avatar, DatePicker, Divider, Input, message, Modal,  Radio, Tooltip, Upload} from "antd";
 import {useAuth} from "../contexts/authContext";
