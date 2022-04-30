@@ -299,6 +299,9 @@ html.dark{
 .ant-btn-primary{
     color: var(--antd-wave-shadow-color);
 }
+.ant-btn > span {
+    display: block;
+}
 
 .crisp-client .cc-kv6t .cc-1ada{
     opacity: 0.8;
