@@ -76,7 +76,7 @@ export function AuthProvider({children}) {
       setFollowers(followers)
       setFollowing(following)
     }
-   return fetchNotifications()
+   fetchNotifications()
   }, [])
 
   
@@ -93,7 +93,7 @@ export function AuthProvider({children}) {
      return user && token ? true : false 
     }    
     localStorage.setItem('user', JSON.stringify(currentUser))
-    return setIsAuth(isAuthenticated())
+    setIsAuth(isAuthenticated())
   }, [cookies, currentUser])
 
 

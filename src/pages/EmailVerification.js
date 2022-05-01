@@ -27,7 +27,7 @@ function EmailVerification() {
                 message.error(error)
             }
         }
-        return isVerified()
+        isVerified()
     }, [token,setCurrentUser])
     setTimeout(() => {
         Navigate('/posts')

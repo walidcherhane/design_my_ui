@@ -29,7 +29,7 @@ function Posts() {
         message.error(error);
       }
     };
-    return fetchPosts();
+    fetchPosts();
   }, [setPosts, sortPref]);
 
   const handleSearch = async (searchQuery) => {

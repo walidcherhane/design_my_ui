@@ -68,7 +68,7 @@ function Profile() {
         Navigate("/posts");
       }
     };
-    return getPosts();
+    getPosts();
   }, [setPosts, username, Navigate]);
   const handlePrfileChange = async () => {
     setProfileLoading(true);

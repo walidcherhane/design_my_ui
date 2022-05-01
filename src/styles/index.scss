@@ -16,6 +16,17 @@ html.dark{
         background-color: rgba(0, 0, 0, 0.303);
         color: rgb(133, 133, 133)
     }
+    .ant-btn.ant-btn-default.ant-btn-block:not([disabled]) , .ant-btn-dashed:not([disabled]) {
+        background-color: transparent;
+        &:hover{
+            background-color: rgba(0, 0, 0, 0.303);
+            border-color: rgba(0, 0, 0, 0.403);
+        } 
+        & > span {
+            color: white;
+            
+        }
+    }
     .ant-radio-button-wrapper{
         background: rgb(46 46 46);
         color: rgb(255, 255, 255);
@@ -190,9 +201,15 @@ html.dark{
     .ant-select-dropdown{
         background-color: #3d3d3d;
     }
+    .ant-select-item-option:not(.ant-select-item-option-disabled){
+        color: white;
+    }
     .ant-select-item-option-active:not(.ant-select-item-option-disabled){
         background-color: #2B2D2E;
-        color: white;
+        &> * {
+            transition: all 0.3s ease;
+            margin-left: 8px;
+        }
     }
     .ant-select-item-option-selected:not(.ant-select-item-option-disabled){
         background-color: #1a1c1d;
@@ -306,7 +323,9 @@ html.dark{
 .crisp-client .cc-kv6t .cc-1ada{
     opacity: 0.8;
 }
-
+.ant-dropdown-menu{
+    padding: 0;
+}
 .ant-back-top {
     right: 5%;
     bottom: 80px ;
@@ -324,9 +343,6 @@ html.dark{
 .ant-input-affix-wrapper {
     background-color: transparent !important;
     background: transparent !important;
-}
-.ant-select-multiple .ant-select-selection-item-remove > .anticon{
-    vertical-align: middle
 }
 svg {
     display: inline-block !important;

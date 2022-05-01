@@ -1,7 +1,7 @@
 import { Avatar, Badge, Button, Dropdown, Menu, message, Space } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import moment from "moment";
-import React, { useCallback } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 import { BsMoon, BsSun } from "react-icons/bs";
@@ -11,7 +11,7 @@ import { deleteNotification, SendUserEmailVerification } from "../api";
 import { useMediaQuery } from "react-responsive";
 import { AiFillBell } from "react-icons/ai";
 import { FaUserPlus } from "react-icons/fa";
-import { TiDelete } from "react-icons/ti";
+import { BiX } from "react-icons/bi";
 import { TiPlus } from "react-icons/ti";
 import { AiFillLike } from "react-icons/ai";
 import emptyNotification from "../assets/img/noti_empty.svg";
@@ -44,59 +44,53 @@ function NavBar() {
       message.error(error);
     }
   };
-  const deleteNoticationHandler = useCallback(
-    async (id) => {
-      setNotifications(
-        notifications.filter((notification) => notification.id !== id)
-      );
-      try {
-        const { data } = await deleteNotification(id);
-        setNotifications(data.notification);
-      } catch (error) {
-        message.error(error);
-      }
-    },
-    [notifications, setNotifications]
-  );
+  const deleteNoticationHandler = async (id) => {
+    setNotifications(
+      notifications.filter((notification) => notification.id !== id)
+    );
+    try {
+      const { data } = await deleteNotification(id);
+      console.log(data)
+      setNotifications(data.notification);
+    } catch (error) {
+      message.error(error);
+    }
+  };
 
   const menu = (
-    <Menu style={{ minWidth: 250 }}>
-      {currentUser && (
-        <>
-          <Menu.Item key={1} style={{ padding: "0px" }}>
-            <Link to={`/${currentUser.username}/profile`}>
+    <Menu
+      style={{ minWidth: 250 }}
+      items={[
+        {
+          label: (
+            <Link to={`/${currentUser?.username}/profile`}>
               <ul className="p-4 px-10 dark:text-white  text-center flex flex-col justify-center items-center rounded-md ">
                 <li>
-                  <Avatar size={70}  src={currentUser.avatar} />
+                  <Avatar size={70} src={currentUser?.avatar} />
                 </li>
-                <li>{currentUser.name} </li>
-                <li>{currentUser.email}</li>
+                <li>{currentUser?.name} </li>
+                <li>{currentUser?.email}</li>
               </ul>
             </Link>
-          </Menu.Item>
-          {!currentUser.isVerified && (
-            <Menu.Item key={2}>
-              <div className="flex  justify-center items-center">
-                <Button onClick={HandleEmailVerification}>Verify Email</Button>
-              </div>
-            </Menu.Item>
-          )}
-          {isSmallScreen && (
-            <>
-              <Menu.Item key={3}>
-                <Link className="text-red" to="/posts">
-                  Designs
-                </Link>
-              </Menu.Item>
-              <Menu.Item key={4}>
-                <Link to="posts/new">Upload design</Link>
-              </Menu.Item>
-            </>
-          )}
-          <Menu.Divider />
-          <Menu.Item key={5}>
+          ),
+        },
+        {
+          label: (
+            <Link className="text-red" to="/posts">
+              Designs
+            </Link>
+          ),
+        },
+        {
+          label: <Link to="posts/new">Upload design</Link>,
+        },
+        {
+          label: (
             <Space style={{ width: "100%" }}>
               <Button onClick={handleLogOut}>Log Out</Button>
+              {!currentUser?.isVerified && (
+                <Button onClick={HandleEmailVerification}>Verify Email</Button>
+              )}
               <span>
                 <Button
                   type="dashed"
@@ -106,69 +100,71 @@ function NavBar() {
                 />
               </span>
             </Space>
-          </Menu.Item>
-        </>
-      )}
-    </Menu>
+          ),
+        },
+      ]}
+    />
   );
 
   const NotificationMenu = (
-    <Menu style={{ minWidth: 250, marginTop: 20 }} selectable={false}>
-      {notifications?.map((notification) => (
-        <Menu.Item key="1">
-          <div className="flex items-center  relative">
-            <div className="relative inline-block shrink-0">
-              <img
-                className="w-10 h-10 rounded-full"
-                src={notification.user.avatar}
-                alt={notification.user.name}
-              />
-              <span className="absolute -bottom-2 -right-2 inline-flex items-center justify-center w-6 h-6 bg-blue-600 text-white  rounded-full">
-                {notification.type === "follow" && <FaUserPlus />}
-                {notification.type === "post" && <TiPlus />}
-                {notification.type === "like" && <AiFillLike />}
-              </span>
-            </div>
-            <div className="ml-3 text-sm font-normal p-2">
-              <h4 className="text-sm font-semibold text-gray-900 dark:text-white">
-                {notification.user.name}
-              </h4>
-              <Button
-                type="link"
-                size="small"
-                shape="circle"
-                className="absolute  top-0 right-0"
-                onClick={() => deleteNoticationHandler(notification.id)}
-              >
-                <TiDelete />
-              </Button>
-              <div className="text-sm font-normal">
-                {notification.type === "follow" &&
-                  "is now following you, Keep going!"}
-                {notification.type === "post" &&
-                  "Shared New Post, go check it out!"}
-                {notification.type === "like" &&
-                  "Yahooo! Your post got a new like! from " +
-                    notification.user.name}
-              </div>
-              <span className="text-xs font-medium text-blue-600 dark:text-blue-500">
-                {moment(notification._data.date).fromNow()}
-              </span>
-            </div>
-          </div>
-        </Menu.Item>
-      ))}
-      {notifications?.length === 0 && (
-        <Menu.Item key={1}>
-          <div className="flex p-8 flex-col items-center justify-center  relative">
-            <h4 className="text-lg  text-gray-300 dark:text-white/50">
-              No Notifications yet
-            </h4>
-            <img className="" src={emptyNotification} alt="empty" />
-          </div>
-        </Menu.Item>
-      )}
-    </Menu>
+    <Menu
+      style={{ minWidth: 250 }}
+      selectable={false}
+      theme={theme}
+      items={
+        notifications?.length === 0
+          ? [
+              {
+                label: (
+                  <div className="flex p-8 flex-col items-center justify-center  relative">
+                    <h4 className="text-lg  text-gray-300 dark:text-white/50">
+                      No Notifications yet
+                    </h4>
+                    <img src={emptyNotification} alt="empty" />
+                  </div>
+                ),
+              },
+            ]
+          : notifications?.map((notification) => {
+              return {
+                label: (
+                  <div
+                    className="flex items-center  relative"
+                    key={notification?.id}
+                  >
+                    <div className="relative inline-block shrink-0">
+                      <img
+                        className="w-10 h-10 rounded-full"
+                        src={notification.user.avatar}
+                        alt={notification.user.name}
+                      />
+                      <span className="absolute -bottom-2 -right-2 flex items-center justify-center w-6 h-6 bg-blue-600 text-white  rounded-full border-2 border-white dark:border-[#2B2D2E] ">
+                        {notification.type === "follow" && <FaUserPlus />}
+                        {notification.type === "post" && <TiPlus />}
+                        {notification.type === "like" && <AiFillLike />}
+                      </span>
+                    </div>
+                    <div className="ml-3 text-sm font-normal p-2">
+                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white">
+                        {notification.user.name}
+                      </h4>
+                      <button
+                        className="absolute text-2xl top-0 right-0 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg flex justify-center items-center  w-6 h-6   "
+                        onClick={() => deleteNoticationHandler(notification.id)}
+                      > <BiX /></button>
+                      <div className="text-sm font-normal">
+                        {notification.content}
+                      </div>
+                      <span className="text-xs font-medium text-blue-600 dark:text-blue-500">
+                        {moment(notification._data.date).fromNow()}
+                      </span>
+                    </div>
+                  </div>
+                ),
+              };
+            })
+      }
+    />
   );
   return (
     <div className="bg-white shadow-lg shadow-gray-100 dark:shadow-black/20 dark:bg-[#2C3333] text-gray-800  fixed top-0 z-50 dark:text-gray-50 p-3  w-full  ">
@@ -193,15 +189,18 @@ function NavBar() {
                   </>
                 )}
                 <Badge count={notifications?.length} size="small">
-                  <Dropdown overlay={NotificationMenu} trigger={["click"]}>
+                  <Dropdown overlay={NotificationMenu} trigger={["hover"]}>
                     <AiFillBell className="text-2xl dark:text-white " />
                   </Dropdown>
                 </Badge>
-                <Dropdown overlay={menu} trigger={["click"]}>
+                <Dropdown overlay={menu} trigger={["hover"]}>
                   {isSmallScreen ? (
                     <MenuOutlined style={{ fontSize: 20 + "px" }} />
                   ) : (
-                    <Avatar src={currentUser.avatar} className=" cursor-pointer " />
+                    <Avatar
+                      src={currentUser.avatar}
+                      className=" cursor-pointer "
+                    />
                   )}
                 </Dropdown>
               </>

@@ -54,7 +54,7 @@ function Post() {
         Navigate("/posts");
       }
     };
-    return fetchPost();
+    fetchPost();
   }, [id, Navigate]);
   const { data } = usePalette(post.Image);
   const color = Object.keys(data).map(function (key) {
