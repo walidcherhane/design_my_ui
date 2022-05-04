@@ -275,83 +275,55 @@ function Profile() {
 
                   <Divider />
                   <ul className="about flex flex-col gap-y-4">
-                    <li className="flex justify-between w-full">
-                      <div className="text-gray-400 font-semibold capitalize dark:text-gray-200">
-                        Email:{" "}
-                      </div>
-                      <Text
-                        editable={
-                          canEdit
-                            ? {
-                                icon: <AiOutlineEdit />,
-                                tooltip: "click to edit text",
-                                onChange: (value) => {
-                                  setModifiedUser({
-                                    ...modifiedUser,
-                                    email: value,
-                                  });
-                                },
-                              }
-                            : false
-                        }
-                        className="text-gray-800 font-normal dark:text-gray-400"
-                      >
-                        {canEdit
-                          ? modifiedUser?.email || currentUser.email
-                          : user.email}
-                      </Text>
-                    </li>
-                    <li className="flex justify-between w-full">
-                      <div className="text-gray-400 font-semibold capitalize dark:text-gray-200">
-                        From:{" "}
-                      </div>
-                      <Text
-                        editable={
-                          canEdit
-                            ? {
-                                icon: <AiOutlineEdit />,
-                                tooltip: "click to edit text",
-                                onChange: (value) => {
-                                  setModifiedUser({
-                                    ...modifiedUser,
-                                    address: value,
-                                  });
-                                },
-                              }
-                            : false
-                        }
-                        className="text-gray-800 font-normal dark:text-gray-400"
-                      >
-                        {canEdit
-                          ? modifiedUser?.address || currentUser.address
-                          : user.address}
-                      </Text>
-                    </li>
-                    <li className="flex justify-between">
-                      <div className="text-gray-400 font-semibold capitalize dark:text-gray-200">
-                        Gender:{" "}
-                      </div>
-                      <span className="text-gray-800 font-normal dark:text-gray-400 capitalize">
-                        {" "}
-                        {user.gender}{" "}
-                      </span>
-                    </li>
-                    <li className="flex justify-between">
-                      <div className="text-gray-400 font-semibold capitalize dark:text-gray-200">
-                        Member Since:{" "}
-                      </div>
-                      <Tooltip
-                        title={moment(
-                          user.memberSince,
-                          "DD/MMM/YYYY"
-                        ).fromNow()}
-                      >
-                        <span className="text-gray-800 font-normal dark:text-gray-400">
-                          {" "}
-                          {user.memberSince}{" "}
-                        </span>
-                      </Tooltip>
-                    </li>
+                    {
+                      Object.keys(user).sort(
+                        (a, b) =>
+                            a.localeCompare(b, "en", {
+                              numeric: true,
+                              sensitivity: "base",
+                            })
+                      ).map((key) => {
+                        if (
+                          user[key] && (
+                          key === 'email' ||
+                          key === 'address' ||
+                          key === "gender" ||
+                          key === "memberSince"
+                          )
+                        ) {
+                          return (
+                            <li className="flex justify-between w-full" key={key}>
+                              <span className="text-gray-400 font-semibold capitalize dark:text-gray-200">
+                                {key}
+                              </span>
+                              <Text
+                                editable={
+                                  canEdit && key !== "memberSince"
+                                    ? {
+                                        icon: <AiOutlineEdit />,
+                                        tooltip: "click to edit text",
+                                        onChange: (value) => {
+                                          setModifiedUser({
+                                            ...modifiedUser,
+                                            [key]: value,
+                                          });
+                                        },
+                                      }
+                                    : false
+                                }
+                                className="text-gray-800 font-normal dark:text-gray-200"
+                              >
+                                {canEdit
+                                  ? modifiedUser?.[key] || currentUser[key] 
+                                  : user[key]}
+                              </Text>
+
+                            </li>
+                          )} else {
+                            return null
+                          }
+                    }
+                 )}
                   </ul>
                 </div>
                 <Divider />
