@@ -43,10 +43,6 @@ For any query, reach me at wcherhane17@gmail.com or drop me a DM at my twitter
 [@cherhane_walid.](https://twitter.com/cherhane_walid)
  
 
-
-## Lessons Learned
-
-While making this project it is obvious that I faced a series of problems, each one made me a better developer and that's what's amazing about self-learning. depending on myself is necessary during the process. I also learned how to search and try to fix any issue, and not just that, but writing better & maintainable code is included in the things I learned in this project 😇
 ## Live Demo
 
 [Live Demo](https://design-my-ui.vercel.app)
