@@ -21,6 +21,7 @@ import {
   followUserHandler,
   getProfile,
 } from "../api";
+import moment from "moment";
 import { useAuth } from "../contexts/authContext";
 import { usePosts } from "../contexts/PostsContext";
 import Post from "../components/Post";
@@ -30,6 +31,7 @@ import Text from "antd/lib/typography/Text";
 import { AiOutlineEdit } from "react-icons/ai";
 import {motion} from 'framer-motion';
 import {AiFillCamera } from 'react-icons/ai';
+import {HiMail, HiUser, HiUsers, HiLocationMarker} from 'react-icons/hi';
 const { TabPane } = Tabs;
 function Profile() {
   const { currentUser, setCurrentUser, setFollowing, following } = useAuth();
@@ -270,9 +272,7 @@ function Profile() {
                         : user.bio}
                     </Text>
                   </div>
-
-                  <Divider />
-                  <ul className="about flex flex-col gap-y-4">
+                  <ul className="about flex flex-col gap-y-4 mt-4">
                     {
                       Object.keys(user).sort(
                         (a, b) =>
@@ -290,9 +290,12 @@ function Profile() {
                           )
                         ) {
                           return (
-                            <li className="flex justify-between w-full" key={key}>
-                              <span className="text-gray-400 font-semibold capitalize dark:text-gray-200">
-                                {key}
+                            <li className="flex gap-4 items-center w-full" key={key}>
+                              <span className="text-gray-400 text-lg font-semibold capitalize dark:text-gray-200">
+                                {key === "email" && <HiMail />}
+                                {key === "gender" && <HiUser />}
+                                {key === "memberSince" && <HiUsers />}
+                                {key === "address" && <HiLocationMarker />}
                               </span>
                               <Text
                                 editable={
@@ -313,7 +316,12 @@ function Profile() {
                               >
                                 {canEdit
                                   ? modifiedUser?.[key] || currentUser[key] 
-                                  : user[key]}
+                                  : key === 'memberSince' ? (
+                                     "Joined "+moment(
+                                      user[key],
+                                      "MM/DD/YYYY"
+                                    ).fromNow()
+                                  ) :  user[key]}
                               </Text>
 
                             </li>
