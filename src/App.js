@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import EmailVerification from "./pages/EmailVerification";
+import NotFound from "./pages/NotFound";
 
 import NavBar from "./components/NavBar";
 
@@ -42,6 +43,7 @@ function App() {
                       <Route exact path="/login" element={<Login />} />
                       <Route exact path="/register" element={<Register />} />
                     </Route>
+                    <Route exact path="*" element={<NotFound />} />
                   </Routes>
                 </Router>
               </HelmetProvider>

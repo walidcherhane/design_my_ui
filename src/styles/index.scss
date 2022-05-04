@@ -41,6 +41,12 @@ html.dark{
         }
         
     }
+    .ant-result-title, .ant-result-subtitle{
+        color: rgb(255, 255, 255);
+    }
+    .ant-result-image svg g g > path{
+        fill: rgb(143 143 143 / 21%)
+    }
     .ant-empty{
         &-description {
             color: #bdbcbc
