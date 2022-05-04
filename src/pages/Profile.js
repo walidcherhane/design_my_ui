@@ -10,7 +10,6 @@ import {
   Popconfirm,
   Spin,
   Tabs,
-  Tooltip,
   Upload,
 } from "antd";
 import React, { useEffect, useState } from "react";
@@ -28,7 +27,6 @@ import Post from "../components/Post";
 import { Helmet } from "react-helmet-async";
 import ImgCrop from "antd-img-crop";
 import Text from "antd/lib/typography/Text";
-import moment from "moment";
 import { AiOutlineEdit } from "react-icons/ai";
 import {motion} from 'framer-motion';
 import {AiFillCamera } from 'react-icons/ai';
