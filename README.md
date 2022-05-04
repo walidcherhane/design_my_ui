@@ -1,3 +1,4 @@
+![design_my_ui (POSTER)](https://user-images.githubusercontent.com/56094829/166807131-43bf8d12-18af-4c3c-8b76-cb255f1e178f.png)
 
 # Design My ui
 
