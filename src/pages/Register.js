@@ -19,6 +19,7 @@ function Register() {
   const [loadModel, setLoadModel] = useState(false);
 
   const userData = {
+    ...user,
     name: user.Name,
     email: user.Email,
     password: user.Password,
@@ -30,6 +31,7 @@ function Register() {
     birthday: user.Birthday,
     altEmail: user.AltEmail,
     username: user.Username,
+
   };
   const handleFileChange = ({file}) => {
     let reader = new FileReader();
