@@ -314,14 +314,16 @@ function Profile() {
                                 }
                                 className="text-gray-800 truncate font-normal dark:text-gray-200"
                               >
-                                {canEdit
-                                  ? modifiedUser?.[key] || currentUser[key] 
-                                  : key === 'memberSince' ? (
-                                     "Joined "+moment(
-                                      user[key],
-                                      "MM/DD/YYYY"
-                                    ).fromNow()
-                                  ) :  user[key]}
+                                {key === 'memberSince' ? (
+                                    "Joined "+moment(
+                                     user[key],
+                                     "MM/DD/YYYY"
+                                   ).fromNow()
+                                 )  : canEdit ? (
+                                    modifiedUser?.[key] || currentUser[key]
+                                   ):(
+                                    user[key]
+                                  )}
                               </Text>
 
                             </li>
