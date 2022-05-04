@@ -312,7 +312,7 @@ function Profile() {
                                       }
                                     : false
                                 }
-                                className="text-gray-800 font-normal dark:text-gray-200"
+                                className="text-gray-800 truncate font-normal dark:text-gray-200"
                               >
                                 {canEdit
                                   ? modifiedUser?.[key] || currentUser[key] 
@@ -336,13 +336,14 @@ function Profile() {
                 {canEdit && (
                   <div className="flex w-full flex-col mt-3 gap-3 px-4">
                     <Button
-                      disabled={!modifiedUser}
+                      disabled={!modifiedUser || ProfileLoading}
                       loading={ProfileLoading}
                       onClick={handlePrfileChange}
-                      block
                       type="dashed"
+                      block
+                      className= "flex justify-center items-center"
                     >
-                      Submit Changes
+                      {ProfileLoading ? 'Saving...' : 'Save Changes'}
                     </Button>
                     <Button
                       onClick={() => setChangePasswordModelVisible(true)}
@@ -356,7 +357,6 @@ function Profile() {
                           setModifiedUser(null);
                         }}
                         block
-
                       >
                         Reset all changes
                       </Button>
