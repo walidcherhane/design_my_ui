@@ -17,11 +17,12 @@ function Register() {
   const {setCookie, setCurrentUser} = useAuth();
   const [loading, setLoading] = useState();
   const [loadModel, setLoadModel] = useState(false);
+
   const userData = {
     name: user.Name,
     email: user.Email,
     password: user.Password,
-    avatar: user.Photo,
+    avatar: user.Photo ?? `https://avatars.dicebear.com/api/adventurer-neutral/${user.Name}.svg` ,
     gender: user.Gender,
     phoneNumber: user.PhoneNumber,
     bio: user.Bio,
@@ -97,6 +98,17 @@ function Register() {
               placeholder="I live in..."
             />
           </div>
+          <div className="flex gap-x-10  flex-col col-span-full ">
+            <label htmlFor="adress">Where did you heard about us:</label>
+            <Input
+              onChange={(e) => {
+                setUser({...user, refferer: e.target.value});
+              }}
+              name="reff"
+              type="text"
+              placeholder="Reddit, Facebook, Instagram, etc..."
+            />
+          </div>
           <div className="flex gap-x-10 col-span-2 flex-col ">
             <label htmlFor="bio">Add Your Bio!</label>
             <TextArea
@@ -130,8 +142,8 @@ function Register() {
                         showUploadList={false}
                         onChange={handleFileChange}
                       >
-                        <Avatar className="bg-gray-200 border-4 border-gray-200" size={100} src={userData.avatar || "https://ik.imagekit.io/buw7k7rvw40/bot_icon_still_2x_KKNChtLbJ.webp"} alt='User avatar' />
-                        <span className="  w-full h-full  flex justify-center items-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2  z-10 text-2xl text-white rounded-full bg-gray-800/40">
+                        <Avatar className="bg-gray-700 border-4 border-gray-700" size={150} src={userData.avatar || "https://ik.imagekit.io/buw7k7rvw40/bot_icon_still_2x_KKNChtLbJ.webp"} alt='User avatar' />
+                        <span className="  flex justify-center items-center absolute right-0 bottom-0 p-4  z-10 text-xl text-white rounded-full bg-gray-800/40">
                           <AiFillCamera />
                         </span>
                       </Upload>
@@ -232,6 +244,7 @@ function Register() {
                           setUser({...user, Password: e.target.value});
                         }}
                         id="password"
+                        minLength={8}
                         type="password"
                         name="password"
                         className="text-sm dark:text-white placeholder-gray-500 text-gray-900 bg-transparent pl-10 pr-4  border border-gray-400 w-full py-2 focus:outline-none"

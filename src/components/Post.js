@@ -46,7 +46,12 @@ function Post({ post }) {
         <div className="w- relative text-start flex justify-start items-center gap-4">
           <div className=" ">
                   <Badge dot={onlineUsers?.some((user)=> user.username === post.Author.username)} status="success">
-                    <Avatar shape="circle" src={post.Author.avatar} />
+                    <Avatar shape="circle" src={post.Author.avatar} onError={
+                      (e) => {
+                        e.target.src =
+                          "https://res.cloudinary.com/dzfqnqwzk/image/upload/v1598584943/avatar_default_yqj0fj.png";
+                      }
+                    } />
                   </Badge>
           </div>
           <Link to={`/${post.Author.username}/profile`} className="text-gray-900  ">
@@ -77,7 +82,7 @@ function Post({ post }) {
                 {post.Title}
               </div>
               <div className="text-sm font-light">
-                {moment(post.Date, "MM/DD/YYYY hh:mm a").fromNow()}
+                {moment(post.Date).fromNow()}
               </div>
             </div>
             <div className="mt-auto flex gap-2 flex-grow ">
