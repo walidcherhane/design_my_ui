@@ -18,13 +18,13 @@ function Register() {
   const [loading, setLoading] = useState();
   const [loadModel, setLoadModel] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
-
+  
   const userData = {
     ...user,
     name: user.Name,
     email: user.Email,
     password: user.Password,
-    avatar: user.Photo ?? `https://avatars.dicebear.com/api/adventurer-neutral/${user.Name}.svg` ,
+    avatar: user.Photo || `https://joeschmoe.io/api/v1/${user.Gender || 'male'}/${user.Name || "joe"}` ,
     gender: user.Gender,
     phoneNumber: user.PhoneNumber,
     bio: user.Bio,
@@ -145,8 +145,8 @@ function Register() {
                         showUploadList={false}
                         onChange={handleFileChange}
                       >
-                        <Avatar className="bg-gray-700 border-4 border-gray-700" size={150} src={userData.avatar || "https://ik.imagekit.io/buw7k7rvw40/bot_icon_still_2x_KKNChtLbJ.webp"} alt='User avatar' />
-                        <span className="  flex justify-center items-center absolute right-0 bottom-0 p-4  z-10 text-xl text-white rounded-full bg-gray-800/40">
+                        <Avatar className="bg-gray-200 " size={140} src={userData.avatar || "https://ik.imagekit.io/buw7k7rvw40/bot_icon_still_2x_KKNChtLbJ.webp"} alt='User avatar' />
+                        <span className="  flex justify-center items-center absolute right-0 bottom-0 p-2  z-10 text-xl text-gray-800 rounded-full bg-gray-200 border-4 border-white">
                           <AiFillCamera />
                         </span>
                       </Upload>
