@@ -75,7 +75,6 @@ function Post() {
     reader.readAsDataURL(file);
   };
 
-
   const handlePostDelete = async () => {
     setLoading(true);
     try {
@@ -217,8 +216,7 @@ function Post() {
                   Click or drag image to this area to upload
                 </p>
                 <p className="ant-upload-hint">
-                  Only .jpeg, .jpg, .png, .gif files are allowed
-                  max size: 5MB
+                  Only .jpeg, .jpg, .png, .gif files are allowed max size: 5MB
                 </p>
               </Dragger>
             </div>
@@ -242,16 +240,18 @@ function Post() {
       )}
       <AnimatePresence>
         {isZoomed && (
-          <motion.div
-            key={post.Image}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsZoomed(false)}
-            className="absolute cursor-zoom-out  z-[99999999999] flex filter backdrop-blur-sm  justify-center bg-gray-900/50 inset-0 h-screen"
-          >
-            <img className="-full object-contain " src={post.Image} alt="" />
-          </motion.div>
+          <>
+            <motion.div
+              key={post.Image}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsZoomed(false)}
+              className="fixed cursor-zoom-out  z-[99999999999] flex filter backdrop-blur-sm  justify-center bg-gray-900/50 inset-0 h-screen"
+            >
+              <img className="-full object-contain " src={post.Image} alt="" />
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
       <div className="mx-auto">
@@ -281,7 +281,7 @@ function Post() {
                   alt={post.Title}
                   onClick={() => setIsZoomed(true)}
                 />
-                <div className="   lg:absolute flex  flex-col my-auto lg:flex-row   lg:top-4 lg:right-4   ">
+                <div className="   lg:absolute flex gap-4 flex-col my-auto lg:flex-row   lg:top-4 lg:right-4   ">
                   {post.Software &&
                     post.Software.map((software) => (
                       <div
