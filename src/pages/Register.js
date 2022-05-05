@@ -3,20 +3,21 @@ import {Link} from "react-router-dom";
 import {BsPerson} from "react-icons/bs";
 import {AiOutlineMail, AiOutlineLock} from "react-icons/ai";
 import {FiAtSign} from "react-icons/fi";
-import {Avatar, DatePicker, Divider, Input, message, Modal,  Radio, Tooltip, Upload} from "antd";
+import {Avatar, DatePicker, Divider, Input, message, Modal,  Radio,  Upload} from "antd";
 import {useAuth} from "../contexts/authContext";
 import {Helmet} from "react-helmet-async";
 import {register} from "../api";
 import ImgCrop from "antd-img-crop";
 import moment from "moment";
 import {AiFillCamera} from "react-icons/ai";
-import {FiHelpCircle} from "react-icons/fi";
+import {MdOutlineVisibility, MdOutlineVisibilityOff} from "react-icons/md";
 const {TextArea} = Input;
 function Register() {
   const [user, setUser] = useState({});
   const {setCookie, setCurrentUser} = useAuth();
   const [loading, setLoading] = useState();
   const [loadModel, setLoadModel] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const userData = {
     ...user,
@@ -247,18 +248,19 @@ function Register() {
                         }}
                         id="password"
                         minLength={8}
-                        type="password"
+                        type={passwordVisible ? "text" : "password"}
                         name="password"
                         className="text-sm dark:text-white placeholder-gray-500 text-gray-900 bg-transparent pl-10 pr-4  border border-gray-400 w-full py-2 focus:outline-none"
                         placeholder="Enter your password"
                       />
-                        <Tooltip
-                          title="Password must be at least 8 characters long"
-                        >
-                        <div className="  inline-flex  items-center  justify-center  absolute  right-0  top-0  h-full  w-10  text-gray-400">
-                            <FiHelpCircle />
-                        </div>
-                      </Tooltip>
+                        <button
+                          type="button"
+                          onClick={()=>{setPasswordVisible(!passwordVisible)}}
+                          className="  inline-flex  items-center  justify-center  absolute  right-0  top-0  h-full  w-10  text-gray-400">
+                            {
+                              passwordVisible ? <MdOutlineVisibilityOff  /> : <MdOutlineVisibility />
+                            } 
+                        </button>
                     </div>
                   </div>
                 </div>
