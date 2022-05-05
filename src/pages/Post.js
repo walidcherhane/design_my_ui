@@ -30,7 +30,6 @@ import sound from "../assets/sounds/5fa5e3b3b18812639b8ece5436f7a280.m4a";
 import { AnimatePresence, motion } from "framer-motion";
 import Dragger from "antd/lib/upload/Dragger";
 const { Option } = Select;
-
 function Post() {
   const { id } = useParams();
   const [post, setPost] = useState("");
@@ -330,42 +329,7 @@ function Post() {
                             <span>
                               <HeartTwoTone style={{ fontSize: "20px" }} />
                             </span>
-                            <Tooltip
-                              placement="left"
-                              title={post.likes?.map((user) => (
-                                <>
-                                  {!user?._id ? (
-                                    <div
-                                      key={Math.random() * 223}
-                                      className="text-[10px] flex items-center gap-3 border-4 border-transparent max-w-[150px] overflow-hidden"
-                                    >
-                                      <Avatar
-                                        sx={{ width: 24, height: 24 }}
-                                        src="https://ik.imagekit.io/buw7k7rvw40/bot_icon_still_2x_KKNChtLbJ.webp"
-                                      />
-                                      <span className="truncate">
-                                        ~Deleted User
-                                      </span>
-                                    </div>
-                                  ) : (
-                                    <div
-                                      key={user.username}
-                                      className="text-[10px] flex items-center gap-3 border-4 border-transparent max-w-[150px] overflow-hidden"
-                                    >
-                                      <Avatar
-                                        sx={{ width: 24, height: 24 }}
-                                        src={user.avatar}
-                                      />
-                                      <span className="truncate">
-                                        {user.name}
-                                      </span>
-                                    </div>
-                                  )}
-                                </>
-                              ))}
-                            >
                               <span> {post.likes?.length} </span>
-                            </Tooltip>
                           </div>
                         )}
                         {post.Views?.length > 0 && (
