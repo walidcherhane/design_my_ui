@@ -46,7 +46,7 @@ export function AuthProvider({children}) {
     socket?.on("notification", (notification)=>{
       // add notification only of it is not already in the array
       if(!notifications.includes(notification)){
-        setNotifications([...notifications, notification])
+        setNotifications([notification ,...notifications ])
       }
     })
   }, [socket,notifications])
@@ -69,14 +69,18 @@ export function AuthProvider({children}) {
   };
 
   useEffect(() => {
-    const fetchNotifications = async () => {
-      const {data} = await  getNotifications()
-      const {notifications, following, followers} = data.response
-      setNotifications(notifications)
-      setFollowers(followers)
-      setFollowing(following)
+    try {
+      const fetchNotifications = async () => {
+        const {data} = await  getNotifications()
+        const {notifications, following, followers} = data.response
+        setNotifications(notifications)
+        setFollowers(followers)
+        setFollowing(following)
+      }
+     fetchNotifications()
+    } catch (error) {
+      message.error(error);
     }
-   fetchNotifications()
   }, [])
 
   
