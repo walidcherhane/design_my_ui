@@ -3,14 +3,17 @@ import { Link } from "react-router-dom";
 import { HiOutlineLockOpen, HiOutlineUser } from "react-icons/hi";
 import { useAuth } from "../contexts/authContext";
 import { Helmet } from "react-helmet-async";
-import { login } from "../api";
+import { forgetPasswordHandler, login } from "../api";
 import { LoadingOutlined } from "@ant-design/icons";
-import { Divider, message } from "antd";
+import { Button, Divider, Input, message, Modal } from "antd";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 function Login() {
   const [User, setUser] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [passwordResetEmail, setPasswordResetEmail] = useState("");
+  const [resetPaswordModel, setResetPaswordModel] = useState(false);
+  const [sendingEmailLoader, setSendingEmailLoader] = useState(false);
   const { setCurrentUser, setCookie } = useAuth();
 
   const handleFormLogin = async (e) => {
@@ -29,13 +32,71 @@ function Login() {
       setLoading(false);
     }
   };
-
+  const handleForgetPassword = async (e) => {
+    e.preventDefault();
+    setSendingEmailLoader(true);
+    try {
+      if (
+        !passwordResetEmail?.match(
+          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
+        )
+      )
+        message.error("Please enter a valid email address");
+      const { data } = await forgetPasswordHandler(passwordResetEmail);
+      message.success(data.message);
+      setSendingEmailLoader(false);
+    } catch (error) {
+      message.error(error);
+      setSendingEmailLoader(false);
+    }
+  };
   return (
     <div className="min-h-screen flex flex-col items-center justify-center ">
       <Helmet>
         <title>{loading ? "loading..." : "Log in"}</title>
       </Helmet>
-      <div className=" flex flex-col shadow-md sm:px-6 md:px-8 lg:px-10  mt-24 w-50 max-w-md relative px-4 py-8 bg-white dark:bg-zinc-800 mx-8 md:mx-0  border-8 border-indigo-600/40 ">
+      <Modal
+        title="Reset your account password"
+        visible={resetPaswordModel}
+        onCancel={() => {
+          setResetPaswordModel(false);
+        }}
+        footer={[
+          <div className="flex justify-end items-center">
+            <Button
+              type="dashed"
+              disabled={sendingEmailLoader}
+              onClick={() => {
+                setResetPaswordModel(false);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="flex items-center"
+              type="button"
+              htmlType="button"
+              loading={sendingEmailLoader}
+              disabled={
+                passwordResetEmail.match(
+                  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                ) === null || sendingEmailLoader
+              }
+              onClick={handleForgetPassword}
+            >
+              {sendingEmailLoader ? "Please Wait..." : "Send password reset email"}
+            </Button>
+            </div>
+        ]}
+      >
+        <div className="flex flex-col gap-y-4">
+          <Input
+            placeholder="Type your email"
+            onChange={(e) => setPasswordResetEmail(e.target.value)}
+          />
+        </div>
+      </Modal>
+      <div className=" flex flex-col shadow-md sm:px-6 md:px-8 lg:px-10  sm:mt-24 w-50 max-w-md relative px-4 py-8 bg-white dark:bg-zinc-800 sm:mx-8 md:mx-0  border-8 border-indigo-600/40 ">
         <div className="font-bold self-center text-3xl sm:text-3xl ">
           {" "}
           Welcome Back{" "}
@@ -74,7 +135,7 @@ function Login() {
               </label>
               <div className="relative">
                 <span className="  inline-flex  items-center  justify-center  absolute  left-0  top-0  h-full  w-10  text-gray-400">
-                    <HiOutlineLockOpen />
+                  <HiOutlineLockOpen />
                 </span>
 
                 <input
@@ -88,21 +149,31 @@ function Login() {
                   className=" bg-transparent text-sm dark:text-white placeholder-gray-500 text-gray-900 pl-10 pr-4  border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400 "
                   placeholder="Enter your password"
                 />
-                              <button
-                type="button"
-                onClick={() => {
-                  setPasswordVisible(!passwordVisible);
-                }}
-                className="  inline-flex  items-center  justify-center  absolute  right-0  top-0  h-full  w-10  text-gray-400"
-              >
-                {passwordVisible ? (
-                  <MdOutlineVisibilityOff />
-                ) : (
-                  <MdOutlineVisibility />
-                )}
-              </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPasswordVisible(!passwordVisible);
+                  }}
+                  className="  inline-flex  items-center  justify-center  absolute  right-0  top-0  h-full  w-10  text-gray-400"
+                >
+                  {passwordVisible ? (
+                    <MdOutlineVisibilityOff />
+                  ) : (
+                    <MdOutlineVisibility />
+                  )}
+                </button>
               </div>
-
+              <p className="underline text-gray-400 mt-2 ">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setResetPaswordModel(true);
+                  }}
+                  className="text-sm text-gray-400 hover:text-gray-600"
+                >
+                  Forgot Password?
+                </button>
+              </p>
             </div>
 
             <div className="flex w-full">

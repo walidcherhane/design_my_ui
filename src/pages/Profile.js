@@ -29,9 +29,9 @@ import { Helmet } from "react-helmet-async";
 import ImgCrop from "antd-img-crop";
 import Text from "antd/lib/typography/Text";
 import { AiOutlineEdit } from "react-icons/ai";
-import {motion} from 'framer-motion';
-import {AiFillCamera } from 'react-icons/ai';
-import {HiMail, HiUser, HiUsers, HiLocationMarker} from 'react-icons/hi';
+import { motion } from "framer-motion";
+import { AiFillCamera } from "react-icons/ai";
+import { HiMail, HiUser, HiUsers, HiLocationMarker } from "react-icons/hi";
 const { TabPane } = Tabs;
 function Profile() {
   const { currentUser, setCurrentUser, setFollowing, following } = useAuth();
@@ -41,7 +41,8 @@ function Profile() {
   const [loading, setLoading] = useState(false);
   const [ProfileLoading, setProfileLoading] = useState(false);
   const [PasswordModelVisible, setPasswordModelVisible] = useState(false);
-  const [changePasswordModelVisible, setChangePasswordModelVisible] = useState(false)
+  const [changePasswordModelVisible, setChangePasswordModelVisible] =
+    useState(false);
   const [changePasswordData, setChangePasswordData] = useState({
     password: "",
     newPassword: "",
@@ -120,15 +121,15 @@ function Profile() {
       message.error(error);
     }
   };
-  const HanlePasswordChange = async ()=>{ 
+  const HanlePasswordChange = async () => {
     try {
-      const {data} = await changeUserPassword(changePasswordData);
+      const { data } = await changeUserPassword(changePasswordData);
       message.success(data.message);
     } catch (error) {
       message.error(error);
     }
-  }
-  const canEdit = currentUser?._id === user?._id; 
+  };
+  const canEdit = currentUser?._id === user?._id;
   return (
     <>
       {loading ? (
@@ -192,36 +193,34 @@ function Profile() {
                           }}
                         >
                           <Avatar
-                            style={{ width: 100+'%', height: 100+'%' }}
+                            style={{ width: 100 + "%", height: 100 + "%", backgroundColor: "white" }}
                             src={modifiedUser?.avatar || currentUser.avatar}
                           />
-                        <span className="  w-full h-full transition opacity-0 hover:opacity-100 flex justify-center items-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2  z-10 text-xl text-white rounded-full bg-gray-900/50">
-                          <AiFillCamera />
-                        </span>
+                          <span className="  w-full h-full transition opacity-0 hover:opacity-100 flex justify-center items-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2  z-10 text-xl text-white rounded-full bg-gray-900/50">
+                            <AiFillCamera />
+                          </span>
                         </Upload>
                       </ImgCrop>
                     ) : (
-                      <img
+                      <Avatar
+                        style={{ width: 100 + "%", height: 100 + "%", backgroundColor: "white" }}
                         src={user.avatar}
-                        alt=""
-                        className=" object-cover object-center"
                       />
                     )}
                   </div>
-
                 </div>
                 {currentUser._id !== user._id && (
-                    <motion.span
-                      layout
-                      role="button"
-                      onClick={handleUserFollow}
-                      className=" mx-auto text-white bg-gradient-to-r from-[#096dd9] to-[#1890ff] shadow-xl shadow-[#0000ff63] font-medium p-1 px-4 rounded-full mb-4  text-center "
-                    >
-                      <span className="text-white">
-                        {following.includes(user._id) ? 'Following' :'Follow'}
-                      </span>
-                    </motion.span>
-                  )}
+                  <motion.span
+                    layout
+                    role="button"
+                    onClick={handleUserFollow}
+                    className=" mx-auto text-white bg-gradient-to-r from-[#096dd9] to-[#1890ff] shadow-xl shadow-[#0000ff63] font-medium p-1 px-4 rounded-full mb-4  text-center "
+                  >
+                    <span className="text-white">
+                      {following.includes(user._id) ? "Following" : "Follow"}
+                    </span>
+                  </motion.span>
+                )}
                 <div className="text-center w-full">
                   <Text
                     editable={
@@ -273,24 +272,26 @@ function Profile() {
                     </Text>
                   </div>
                   <ul className="about flex flex-col gap-y-4 mt-4">
-                    {
-                      Object.keys(user).sort(
-                        (a, b) =>
-                            a.localeCompare(b, "en", {
-                              numeric: true,
-                              sensitivity: "base",
-                            })
-                      ).map((key) => {
+                    {Object.keys(user)
+                      .sort((a, b) =>
+                        a.localeCompare(b, "en", {
+                          numeric: true,
+                          sensitivity: "base",
+                        })
+                      )
+                      .map((key) => {
                         if (
-                          user[key] && (
-                          key === 'email' ||
-                          key === 'address' ||
-                          key === "gender" ||
-                          key === "memberSince"
-                          )
+                          user[key] &&
+                          (key === "email" ||
+                            key === "address" ||
+                            key === "gender" ||
+                            key === "memberSince")
                         ) {
                           return (
-                            <li className="flex gap-4 items-center w-full" key={key}>
+                            <li
+                              className="flex gap-4 items-center w-full"
+                              key={key}
+                            >
                               <span className="text-gray-400 text-lg font-semibold capitalize dark:text-gray-200">
                                 {key === "email" && <HiMail />}
                                 {key === "gender" && <HiUser />}
@@ -314,21 +315,18 @@ function Profile() {
                                 }
                                 className="text-gray-800 truncate font-normal dark:text-gray-200"
                               >
-                                {key === 'memberSince' ? (
-                                    "Joined "+moment(user[key]).fromNow()
-                                 )  : canEdit ? (
-                                    modifiedUser?.[key] || currentUser[key]
-                                   ):(
-                                    user[key]
-                                  )}
+                                {key === "memberSince"
+                                  ? "Joined " + moment(user[key]).fromNow()
+                                  : canEdit
+                                  ? modifiedUser?.[key] || currentUser[key]
+                                  : user[key]}
                               </Text>
-
                             </li>
-                          )} else {
-                            return null
-                          }
-                    }
-                 )}
+                          );
+                        } else {
+                          return null;
+                        }
+                      })}
                   </ul>
                 </div>
                 <Divider />
@@ -340,9 +338,9 @@ function Profile() {
                       onClick={handlePrfileChange}
                       type="dashed"
                       block
-                      className= "flex justify-center items-center"
+                      className="flex justify-center items-center"
                     >
-                      {ProfileLoading ? 'Saving...' : 'Save Changes'}
+                      {ProfileLoading ? "Saving..." : "Save Changes"}
                     </Button>
                     <Button
                       onClick={() => setChangePasswordModelVisible(true)}
@@ -374,7 +372,6 @@ function Profile() {
                     )}
                   </div>
                 )}
-
               </div>
               <Modal
                 title="Delete Profile"
@@ -452,42 +449,48 @@ function Profile() {
                 ]}
               >
                 <div className="flex flex-col gap-y-4">
-                <Input.Password
-                  required
-                  placeholder="Enter your old password"
-                  onChange={(e) => {
-                    setChangePasswordData({
-                      ...changePasswordData,
-                      password: e.target.value,
-                    });
-                  }}
-                />
-                <Input.Password
-                  required
-                  placeholder="Enter new password"
-                  onChange={(e) => {
-                    setChangePasswordData({
-                      ...changePasswordData,
-                      newPassword: e.target.value,
-                    });
-                  }}
-                />
-                <Input.Password
-                  required
-                  placeholder="Re-enter new password"
-                  onChange={(e) => {
-                    setChangePasswordData({
-                      ...changePasswordData,
-                      newPasswordConfirm: e.target.value,
-                    });
-                  }}
-                />
+                  <Input.Password
+                    required
+                    placeholder="Enter your old password"
+                    onChange={(e) => {
+                      setChangePasswordData({
+                        ...changePasswordData,
+                        password: e.target.value,
+                      });
+                    }}
+                  />
+                  <Input.Password
+                    required
+                    placeholder="Enter new password"
+                    onChange={(e) => {
+                      setChangePasswordData({
+                        ...changePasswordData,
+                        newPassword: e.target.value,
+                      });
+                    }}
+                  />
+                  <Input.Password
+                    required
+                    placeholder="Re-enter new password"
+                    onChange={(e) => {
+                      setChangePasswordData({
+                        ...changePasswordData,
+                        newPasswordConfirm: e.target.value,
+                      });
+                    }}
+                  />
                 </div>
               </Modal>
-              <motion.div layout className="md:col-span-1 lg:col-span-2 xl:col-span-3 2xl:col-span-4  pt-4">
+              <motion.div
+                layout
+                className="md:col-span-1 lg:col-span-2 xl:col-span-3 2xl:col-span-4  pt-4"
+              >
                 <Tabs defaultActiveKey="1">
                   <TabPane tab={`${user.name?.split(" ")[0]}'s Posts `} key="1">
-                    <motion.div layout className="grid gap-4  grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 ">
+                    <motion.div
+                      layout
+                      className="grid gap-4  grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 "
+                    >
                       {posts.length ? (
                         posts.map((post) => (
                           <Post post={post} currentUser={user} key={post._id} />
@@ -509,7 +512,10 @@ function Profile() {
                     tab={`${user.name?.split(" ")[0]}'s Saved Posts `}
                     key="2"
                   >
-                    <motion.div layout className="grid gap-4 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                    <motion.div
+                      layout
+                      className="grid gap-4 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                    >
                       {SavedPosts.length ? (
                         SavedPosts.map((post) => (
                           <Post post={post} currentUser={user} key={post._id} />

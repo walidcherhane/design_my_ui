@@ -46,12 +46,7 @@ function Post({ post }) {
         <div className="w- relative text-start flex justify-start items-center gap-4">
           <div className=" ">
                   <Badge dot={onlineUsers?.some((user)=> user.username === post.Author.username)} status="success">
-                    <Avatar shape="circle" src={post.Author.avatar} onError={
-                      (e) => {
-                        e.target.src =
-                          "https://res.cloudinary.com/dzfqnqwzk/image/upload/v1598584943/avatar_default_yqj0fj.png";
-                      }
-                    } />
+                    <Avatar shape="circle" src={post.Author.avatar} style={{backgroundColor: "white"}} />
                   </Badge>
           </div>
           <Link to={`/${post.Author.username}/profile`} className="text-gray-900  ">

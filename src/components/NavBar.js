@@ -66,7 +66,7 @@ function NavBar() {
             <Link to={`/${currentUser?.username}/profile`}>
               <ul className="p-4 px-10 dark:text-white  text-center flex flex-col justify-center items-center rounded-md ">
                 <li>
-                  <Avatar size={70} src={currentUser?.avatar} />
+                  <Avatar size={70} src={currentUser?.avatar} style={{ backgroundColor: "white" }} />
                 </li>
                 <li>{currentUser?.name} </li>
                 <li>{currentUser?.email}</li>

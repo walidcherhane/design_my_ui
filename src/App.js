@@ -21,6 +21,7 @@ import { HelmetProvider } from "react-helmet-async";
 
 import Public from "./auth/PublicRoute";
 import Private from "./auth/PrivateRoute";
+import ResetPassword from "./auth/ResetPassword";
 function App() {
   return (
     <>
@@ -32,6 +33,7 @@ function App() {
                 <Router>
                   <NavBar />
                   <Routes>
+                    <Route exact path="/auth/forget-password/:token" element={<ResetPassword />}/>
                     <Route exact path="/" element={<Private />}>
                       {["/","/posts"].map((path, index) => <Route exact path={path} element={<Posts />} key={index}/>)}
                       <Route exact path="/posts/new" element={<AddPosts />} />

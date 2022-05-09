@@ -127,7 +127,7 @@ function Register() {
           </div>
         </div>
       </Modal>
-      <div className=" flex flex-col shadow-md px-4 sm:px-6 md:px-8 lg:px-10  mt-28 sm:w-9/12  max-w-4xl relative  py-8 bg-white dark:bg-zinc-800    border-8 border-indigo-600/40 ">
+      <div className=" flex flex-col shadow-md px-4 sm:px-6 md:px-8 lg:px-10  sm:mt-28 sm:w-9/12  max-w-4xl relative  py-8 bg-white dark:bg-zinc-800    border-8 border-indigo-600/40 ">
         <h1 className="font-bold text-center text-3xl sm:text-3xl dark:text-white ">Join us Now</h1>
         <p className="mx-10 mt-4 text-center text-sm sm:text-sm ">Enter your credentials to get access account</p>
         <Divider />

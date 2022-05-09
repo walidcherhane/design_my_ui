@@ -13,7 +13,7 @@ API.interceptors.request.use((req) => {
 
 API.interceptors.response.use((res) =>{ 
       return res
-} , error=> { 
+} , error => { 
       if (error.response && error.response?.status === 401){
             Cookies.remove('AUTH_TOKEN',{path: '/'})
             localStorage.clear()
@@ -32,6 +32,11 @@ export const deleteProfile = async(password)=>{ return await API.delete('/profil
 export const SendUserEmailVerification = async()=>{ return await API.get('/verify')}
 export const verifyUserEmailToken = async(token)=>{ return await API.patch(`/verify/${token}`)}
 export const changeUserPassword = async(data)=>{ return await API.patch('/auth/change-password', {data})}
+
+
+export const forgetPasswordHandler = async(email)=>{ return await API.post('/auth/forget-password', {data: {email}})}
+export const handleForgetPasswordResponse = async(token)=>{ return await API.post(`/auth/forget-password/${token}`)}
+export const handlePasswordReset = async(data)=>{ return await API.patch(`/auth/forget-password/${data.token}`, {data})}
 
 export const followUserHandler = async (username)=>{ return await API.patch(`/follow/${username}`)}
 export const getNotifications = async ()=>{ return await API.get(`/notifications/`)}

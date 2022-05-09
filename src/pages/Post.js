@@ -16,7 +16,6 @@ import {
   Popconfirm,
   Select,
   Spin,
-  Tooltip,
 } from "antd";
 import { useAuth } from "../contexts/authContext";
 import { Helmet } from "react-helmet-async";
@@ -349,7 +348,7 @@ function Post() {
                     {post.Title}
                   </h3>
                   <span className="text-gray-500 dark:text-gray-100   mt-1">
-                    {moment(post.Date, "MM/DD/YYYY hh:mm a").fromNow()}
+                    {moment(post.Date).fromNow()}
                   </span>{" "}
                   <br />
                   <div className="flex flex-wrap gap-2 mt-6">
